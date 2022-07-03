@@ -1,9 +1,10 @@
 import os
-from config import TOKEN, CHANNEL
-from messages import start, append_footer
 
-from telegram import Update, ParseMode  #upm package(python-telegram-bot)
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Defaults, CallbackContext  #upm package(python-telegram-bot)
+from telegram import ParseMode
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Defaults
+
+from config import CHANNEL, TOKEN
+from messages import start, append_footer
 
 
 def main():
@@ -18,7 +19,12 @@ def main():
             (Filters.photo | Filters.video | Filters.animation)
             & Filters.chat(chat_id=CHANNEL), append_footer))
 
-    updater.start_polling()
+    updater.start_webhook(
+        "0.0.0.0",
+        int(os.environ["PORT"]),
+        TOKEN,
+        webhook_url=f"https://ptb-i3.herokuapp.com/{TOKEN}",
+    )
     updater.idle()
 
 
