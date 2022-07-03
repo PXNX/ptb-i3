@@ -25,8 +25,6 @@ def main():
         TOKEN,
         webhook_url=f"https://ptb-i3.herokuapp.com/{TOKEN}",
     )
-    updater.idle()
-
 
 if __name__ == '__main__':
     main()
