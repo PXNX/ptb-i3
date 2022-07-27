@@ -14,4 +14,5 @@ def append_footer(update: Update, _: CallbackContext):
         f"{original_caption}\n\n👨‍💻 Join <a href='https://t.me/blog_itisinteresting'>IT IS INTERESTING</a> <u>NOW</u> for more!")
 
 def join_member(update: Update, context: CallbackContext):
+    print(update)
     context.bot.send_message(NYX, str(update.message.new_chat_members))
