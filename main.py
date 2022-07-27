@@ -2,10 +2,13 @@ import os
 
 from telegram.ext import ApplicationBuilder, filters
 from telegram.ext import CommandHandler, MessageHandler
+from telethon import TelegramClient
 
+import config
 from config import CHANNEL, TOKEN
 from messages import append_footer, hello
 
+client = TelegramClient("remove_inactive", config.api_id, config.api_hash)
 
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
