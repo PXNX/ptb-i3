@@ -26,7 +26,4 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def check_member(user_id):
     async with TelegramClient("remove_inactive", config.api_id, config.api_hash) as client:
 
-        async for member in client.iter_participants("blog_itisinteresting"):
-            print(member.id)
-            if member.id == user_id: return True
-        return False
+        return any(member.id == user_id async for member in  client.get_participants("blog_itisinteresting"))
