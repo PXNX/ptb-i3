@@ -3,8 +3,6 @@ from telegram.ext import CallbackContext, ContextTypes
 from telethon import TelegramClient
 
 import config
-
-client = TelegramClient("remove_inactive", config.api_id, config.api_hash)
 async def start(update: Update, context: CallbackContext):
     await update.message.reply_text("Hi!")
 
@@ -24,4 +22,5 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def check_member(user_id):
-    return any(member.id == user_id for member in await client.get_participants("blog_itisinteresting"))
+    with TelegramClient("remove_inactive", config.api_id, config.api_hash) as client:
+        return any(member.id == user_id for member in await client.get_participants("blog_itisinteresting"))
