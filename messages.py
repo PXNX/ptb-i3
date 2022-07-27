@@ -10,7 +10,7 @@ def start(update: Update, context: CallbackContext):
 
 def append_footer(update: Update, _: CallbackContext):
     original_caption = update.channel_post.caption_html_urled if update.channel_post.caption is not None else ''
-    update.channel_post.edit_caption(
+    await update.channel_post.edit_caption(
         f"{original_caption}\n\n👨‍💻 Join <a href='https://t.me/blog_itisinteresting'>IT IS INTERESTING</a> <u>NOW</u> for more!")
 
 def join_member(update: Update, context: CallbackContext):
