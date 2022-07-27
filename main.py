@@ -1,3 +1,5 @@
+import os
+
 from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, filters
 from telegram.ext import CommandHandler, MessageHandler
@@ -6,7 +8,6 @@ from telethon import TelegramClient
 import config
 from config import CHANNEL, TOKEN
 from messages import append_footer
-
 
 
 async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -25,10 +26,9 @@ async def check_member(user_id):
             if member.id == user_id: return True
         return False
 
+
 def main():
     app = ApplicationBuilder().token(TOKEN).build()
-
-
 
     app.add_handler(
         MessageHandler(
@@ -37,9 +37,10 @@ def main():
 
     app.add_handler(CommandHandler("start", hello))
 
-    app.run_polling()
+    app.run_webhook("0.0.0.0",
+                    int(os.environ["PORT"]),
+                    webhook_url=f"https://ptb-i3.herokuapp.com/{TOKEN}")
 
 
 if __name__ == '__main__':
     main()
-
