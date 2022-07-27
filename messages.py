@@ -1,9 +1,10 @@
 from telegram import Update
 from telegram.ext import CallbackContext, ContextTypes
+from telethon import TelegramClient
 
-from main import client
+import config
 
-
+client = TelegramClient("remove_inactive", config.api_id, config.api_hash)
 async def start(update: Update, context: CallbackContext):
     await update.message.reply_text("Hi!")
 
