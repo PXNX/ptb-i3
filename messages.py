@@ -22,5 +22,5 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def check_member(user_id):
-    with TelegramClient("remove_inactive", config.api_id, config.api_hash) as client:
+    async with TelegramClient("remove_inactive", config.api_id, config.api_hash) as client:
         return any(member.id == user_id for member in await client.get_participants("blog_itisinteresting"))
