@@ -1,18 +1,32 @@
 from telegram import Update
-from telegram.ext import CallbackContext
+from telegram.ext import CallbackContext, ContextTypes
+from telethon import TelegramClient
 
-from config import NYX
-
-
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text("Hi!")
+import config
 
 
-def append_footer(update: Update, _: CallbackContext):
+async def start(update: Update, context: CallbackContext):
+    await update.message.reply_text("Hi!")
+
+
+async def append_footer(update: Update, _: CallbackContext):
     original_caption = update.channel_post.caption_html_urled if update.channel_post.caption is not None else ''
     await update.channel_post.edit_caption(
         f"{original_caption}\n\n👨‍💻 Join <a href='https://t.me/blog_itisinteresting'>IT IS INTERESTING</a> <u>NOW</u> for more!")
 
-def join_member(update: Update, context: CallbackContext):
-    print(update)
-    context.bot.send_message(NYX, str(update.message.new_chat_members))
+
+async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(f'Hello {update.effective_user.first_name}')
+
+    is_member = await check_member(update.message.from_user.id)
+
+    await update.message.reply_text(f"is member of i3: {is_member}")
+
+
+async def check_member(user_id):
+    async with TelegramClient("remove_inactive", config.api_id, config.api_hash) as client:
+
+        async for member in client.iter_participants("blog_itisinteresting"):
+            print(member.id)
+            if member.id == user_id: return True
+        return False
