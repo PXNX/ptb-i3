@@ -37,8 +37,10 @@ def main():
 
     app.add_handler(CommandHandler("start", hello))
 
-    app.run_webhook("0.0.0.0",
+    app.run_webhook(listen="0.0.0.0",
+                    port=
                     int(os.environ["PORT"]),
+                    url_path=TOKEN,
                     webhook_url=f"https://ptb-i3.herokuapp.com/{TOKEN}")
 
 
