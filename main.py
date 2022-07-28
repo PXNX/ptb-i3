@@ -1,6 +1,6 @@
 import os
 
-from telegram import ParseMode
+from telegram.constants import ParseMode
 from telegram.ext import ApplicationBuilder, filters, CallbackQueryHandler, ConversationHandler, Defaults
 from telegram.ext import CommandHandler, MessageHandler
 
