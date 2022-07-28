@@ -1,6 +1,7 @@
 import os
 
-from telegram.ext import ApplicationBuilder, filters, CallbackQueryHandler, ConversationHandler
+from telegram import ParseMode
+from telegram.ext import ApplicationBuilder, filters, CallbackQueryHandler, ConversationHandler, Defaults
 from telegram.ext import CommandHandler, MessageHandler
 
 from config import CHANNEL, TOKEN, TEST_MODE
@@ -9,7 +10,7 @@ from messages import append_footer, hello, solution_callback, send_question, QUE
 
 
 def main():
-    app = ApplicationBuilder().token(TOKEN).build()
+    app = ApplicationBuilder().token(TOKEN).defaults(Defaults(parse_mode=ParseMode.HTML)).build()
 
     app.add_handler(
         MessageHandler(
