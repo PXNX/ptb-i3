@@ -1,15 +1,26 @@
+import logging
 import os
+from datetime import datetime
 
 from telegram.constants import ParseMode
 from telegram.ext import ApplicationBuilder, filters, CallbackQueryHandler, ConversationHandler, Defaults
 from telegram.ext import CommandHandler, MessageHandler
 
-from config import CHANNEL, TOKEN, TEST_MODE
+from config import CHANNEL, TOKEN
 from messages import append_footer, hello, solution_callback, send_question, QUESTION, PHOTO, SOLUTION, ANSWERS, \
     send_photo, send_solution, send_answers, skip_photo, receive_answer, send_result, cancel
 
+LOG_FILENAME = rf"./logs/{datetime.now().strftime('%Y-%m-%d')}/{datetime.now().strftime('%H-%M-%S')}.log"
+os.makedirs(os.path.dirname(LOG_FILENAME), exist_ok=True)
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-5s %(funcName)-20s [%(filename)s:%(lineno)d]: %(message)s",
+    encoding="utf-8",
+    filename=LOG_FILENAME,
+    level=logging.INFO,
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
-def main():
+if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).defaults(Defaults(parse_mode=ParseMode.HTML)).build()
 
     app.add_handler(
@@ -34,15 +45,5 @@ def main():
     buttons_handler = CallbackQueryHandler(solution_callback)
     app.add_handler(buttons_handler)
 
-    if TEST_MODE:
-        print("---testing---")
-        app.run_polling()
-    else:
-        app.run_webhook(listen="0.0.0.0",
-                        port=int(os.environ["PORT"]),
-                        url_path=TOKEN,
-                        webhook_url=f"https://ptb-i3.herokuapp.com/{TOKEN}")
-
-
-if __name__ == '__main__':
-    main()
+    print("### RUN LOCAL ###")
+    app.run_polling(poll_interval=1)
